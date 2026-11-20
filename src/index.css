@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+/* Font DM Mono (dimuat di index.html) dipakai sebagai font mono aplikasi,
+   sehingga utility `font-mono` otomatis memakai DM Mono. */
+@theme {
+  --font-mono: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+/* Layout dasar aplikasi: kolom penuh tinggi agar header dan konten tersusun rapi */
+#root {
+  display: flex;
+  min-height: 100svh;
+  flex-direction: column;
+}
+
+body {
+  margin: 0;
+}
+
+/* Sembunyikan kursor asli karena pakai kursor kustom (CustomCursor).
+   Kembalikan cursor pointer pada elemen interaktif agar user tetap
+   bisa melihat area yang bisa diklik. */
+.cursor-none-app,
+.cursor-none-app * {
+  cursor: none !important;
+}
+
+.cursor-none-app a,
+.cursor-none-app button,
+.cursor-none-app input,
+.cursor-none-app select,
+.cursor-none-app textarea,
+.cursor-none-app [role="button"] {
+  cursor: none !important;
+}
