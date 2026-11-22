@@ -1,0 +1,23 @@
+/*
+ * Dibuat minimal: ukuran font, tebal, tinggi baris, dan margin SENGAJA tidak
+ * diatur di sini. CSS ini tidak berada di dalam @layer, jadi akan mengalahkan
+ * class Tailwind (text-4xl, font-medium, dll.). Atur gaya teks lewat
+ * `containerClassName` / `textClassName`.
+ */
+.scroll-reveal {
+  margin: 0;
+}
+
+.scroll-reveal-text {
+  display: block;
+}
+
+.scroll-reveal-word,
+.scroll-reveal-piece {
+  display: inline-block;
+}
+
+/* Kata yang ditebalkan lewat <strong> / <b> di dalam children */
+.scroll-reveal-bold {
+  font-weight: 700;
+}

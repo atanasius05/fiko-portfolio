@@ -10,15 +10,36 @@ export default function CustomCursor() {
   const [pos, setPos] = useState({ x: -100, y: -100 });
   // kursor kustom tampil / tersembunyi (saat mouse keluar dari halaman)
   const [visible, setVisible] = useState(true);
+  // status hover elemen interaktif (dibaca dari `cursor` inline elemen di bawah pointer)
+  const [mode, setMode] = useState<"idle" | "grab" | "grabbing" | "pointer">("idle");
   // posisi pill "YOU" yang mengikuti dengan lerp (halus)
   const pillRef = useRef<HTMLDivElement | null>(null);
   const rafRef = useRef<number | null>(null);
   const targetRef = useRef({ x: -100, y: -100 });
 
   useEffect(() => {
+    /**
+     * Membaca nilai `cursor` inline pada elemen di bawah pointer (mis. yang
+     * dipasang TechText: "grab" / "grabbing" / "pointer"). Visual cursor asli
+     * memang ditimpa `cursor: none`, tapi nilai inline-nya tetap bisa dibaca
+     * sehingga kursor kustom bisa memberi sinyal yang sama.
+     */
+    const readMode = (x: number, y: number): "idle" | "grab" | "grabbing" | "pointer" => {
+      // `elementsFromPoint` mengembalikan seluruh elemen pada titik tersebut (urut dari
+      // paling atas). Dipakai agar sinyal `cursor` dari layer bawah (mis. TechText) tetap
+      // terbaca walau ada layer lain (kanvas Lanyard) yang menutupinya secara visual.
+      const nodes = document.elementsFromPoint(x, y) as HTMLElement[];
+      for (const node of nodes) {
+        const value = node.style?.cursor;
+        if (value === "grabbing" || value === "grab" || value === "pointer") return value;
+      }
+      return "idle";
+    };
+
     const onMove = (e: MouseEvent) => {
       setPos({ x: e.clientX, y: e.clientY });
       targetRef.current = { x: e.clientX, y: e.clientY };
+      setMode(readMode(e.clientX, e.clientY));
     };
 
     // Mouse keluar dari jendela halaman -> sembunyikan kursor kustom
@@ -71,34 +92,40 @@ export default function CustomCursor() {
 
   return (
     <>
-      {/* Segi delapan (oktagon) hitam yang mengikuti mouse secara langsung */}
+      {/* Segi delapan (oktagon) hitam yang mengikuti mouse secara langsung.
+          Membesar saat berada di atas elemen interaktif. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none fixed left-0 top-0 z-[9999] h-3.5 w-4 -translate-x-1/2 -translate-y-1/2 bg-black transition-opacity duration-150"
+        className="pointer-events-none fixed left-0 top-0 z-[9999] h-4 w-4 -translate-x-1/2 -translate-y-1/2 bg-black transition-opacity duration-150"
         style={{
           opacity: visible ? 1 : 0,
-          transform: `translate3d(${pos.x}px, ${pos.y}px, 0) translate(-50%, -50%)`,
+          transform: `translate3d(${pos.x}px, ${pos.y}px, 0) translate(-50%, -50%) scale(${
+            mode === "idle" ? 1 : 1.8
+          })`,
           // oktagon dengan sisi atas & bawah rata (flat-top / flat-bottom)
           clipPath:
             "polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)",
         }}
       />
 
-      {/* Pill "YOU" yang mengikuti titik, rounded pada 3 sudut (atas kiri = 0) */}
+      {/* Pill yang mengikuti titik, rounded pada 3 sudut (atas kiri = 0).
+          Label & warna berubah saat hover elemen yang bisa di-drag/diklik. */}
       <div
         ref={pillRef}
         data-x="-100"
         data-y="-100"
         aria-hidden="true"
-        className="pointer-events-none fixed left-0 top-0 z-[9998] flex h-10 items-center rounded-tl-none rounded-tr-2xl rounded-br-2xl rounded-bl-2xl bg-black px-4 font-mono text-sm font-medium text-white transition-opacity duration-150"
+        className={`pointer-events-none fixed left-0 top-0 z-[9998] flex h-8 items-center rounded-tl-none rounded-tr-2xl rounded-br-2xl rounded-bl-2xl px-3 font-mono text-sm font-medium transition-opacity duration-150 ${
+          mode === "idle" ? "bg-black text-white" : "bg-red-400 text-black"
+        }`}
         style={{
           opacity: visible ? 1 : 0,
           transform: "translate3d(-100px, -100px, 0)",
-          marginLeft: "7px",
-          marginTop: "5px",
+          marginLeft: "0px",
+          marginTop: "3 px",
         }}
       >
-        YOU
+        {mode === "idle" ? "YOU" : mode === "pointer" ? "CLICK" : "DRAG"}
       </div>
     </>
   );

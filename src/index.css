@@ -1,10 +1,58 @@
 @import "tailwindcss";
 
+/* Font variable "Flux" (file di src/assets/FluxVF.woff2) yang dipakai
+   komponen TechText untuk wordmark "Portfolio" di halaman HOME. */
+@font-face {
+  font-family: "Flux";
+  src: url("./assets/FluxVF.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Font DM Mono (dimuat di index.html) dipakai sebagai font mono aplikasi,
    sehingga utility `font-mono` otomatis memakai DM Mono. */
 @theme {
   --font-mono: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-jetbrains: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Animasi "breathe" untuk indikator status (titik menyala redup-nyala). */
+  --animate-breathe: breathe 2.4s ease-in-out infinite;
+
+  @keyframes breathe {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.45;
+      transform: scale(0.8);
+    }
+  }
 }
+
+.just-me-again-down-here-regular {
+  font-family: "Just Me Again Down Here", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.caveat-font {
+  font-family: "Caveat", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.bricolage-grotesque-regular {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
 
 /* Layout dasar aplikasi: kolom penuh tinggi agar header dan konten tersusun rapi */
 #root {
@@ -15,6 +63,23 @@
 
 body {
   margin: 0;
+}
+
+/* Background grid: garis abu-abu (gray-200) membentuk kotak-kotak.
+   Ukuran sel 20px di layar besar, mengecil otomatis di layar kecil
+   agar tetap proporsional (responsive). */
+.bg-grid {
+  --grid-size: 14px;
+  background-image:
+    linear-gradient(to right, var(--color-gray-100) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-gray-100) 1px, transparent 1px);
+  background-size: var(--grid-size) var(--grid-size);
+}
+
+@media (min-width: 640px) {
+  .bg-grid {
+    --grid-size: 160px;
+  }
 }
 
 /* Sembunyikan kursor asli karena pakai kursor kustom (CustomCursor).
