@@ -4,6 +4,7 @@ import CustomCursor from "./components/CustomCursor";
 import Navbar from "./components/Navbar";
 import Ruler from "./components/Ruler";
 import About from "./pages/About";
+import Contact from "./pages/Contact";
 import Home from "./pages/Home";
 import Playground from "./pages/Playground";
 import Projects from "./pages/Projects";
@@ -30,6 +31,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/work" element={<Work />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/playground" element={<Playground />} />
           {/* Fallback: path yang tidak dikenal dikembalikan ke Home */}
           <Route path="*" element={<Home />} />

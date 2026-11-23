@@ -161,7 +161,7 @@ const defaultBadges: Badge[] = [
 
 // Gaya tombol outline yang dipakai bersama oleh tombol CONTACT dan tombol MENU.
 const outlineButton =
-  "flex h-9 items-center gap-2 border border-black bg-white px-4 tracking-wide transition-colors hover:bg-black hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-400";
+  "flex h-9 items-center gap-2 border border-black bg-white px-4 tracking-wide text-black transition-colors duration-200 ease-out hover:bg-black hover:text-white focus-visible:bg-black focus-visible:text-white active:bg-neutral-800 active:text-white aria-expanded:bg-black aria-expanded:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-400";
 
 const defaultItems: NavItem[] = [
   { id: "home", label: "HOME", to: "/", icon: homeSvg },
@@ -174,13 +174,11 @@ const defaultItems: NavItem[] = [
 type NavbarProps = {
   items?: NavItem[];
   badges?: Badge[];
-  onContactClick?: () => void;
 };
 
 export default function Navbar({
   items = defaultItems,
   badges = defaultBadges,
-  onContactClick,
 }: NavbarProps) {
   // Menu mobile/tablet (di bawah breakpoint `lg`) terbuka atau tertutup
   const [open, setOpen] = useState(false);
@@ -196,11 +194,6 @@ export default function Navbar({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
-
-  const handleContact = () => {
-    closeMenu();
-    onContactClick?.();
-  };
 
   // Item menu muncul satu per satu (stagger) saat dibuka; saat menutup langsung hilang.
   const STEP_MS = 45;
@@ -257,14 +250,10 @@ export default function Navbar({
               <BadgeTip key={badge.label} {...badge} placement="bottom" />
             ))}
 
-            <button
-              type="button"
-              onClick={onContactClick}
-              className={`ml-2 ${outlineButton}`}
-            >
+            <NavLink to="/contact" className={`ml-2 ${outlineButton}`}>
               <SvgIcon src={heartSvg} />
               <span>CONTACT</span>
-            </button>
+            </NavLink>
           </div>
 
           <button
@@ -327,10 +316,10 @@ export default function Navbar({
                 <BadgeTip key={badge.label} {...badge} placement="top" />
               ))}
 
-              <button type="button" onClick={handleContact} className={`ml-2 ${outlineButton}`}>
+              <NavLink to="/contact" onClick={closeMenu} className={`ml-2 ${outlineButton}`}>
                 <SvgIcon src={heartSvg} />
                 <span>CONTACT</span>
-              </button>
+              </NavLink>
             </div>
           </div>
         </div>

@@ -17,7 +17,13 @@
   display: inline-block;
 }
 
-/* Kata yang ditebalkan lewat <strong> / <b> di dalam children */
+/* Kata yang ditebalkan lewat <strong> / <b> di dalam children.
+   Memakai font "Inter Tight" (dimuat di index.html) agar bagian tebal
+   terasa lebih rapat dari teks di sekitarnya, dengan warna red-700.
+   letter-spacing: tracking-tight (-0.025em) dari container dirapatkan 10%. */
 .scroll-reveal-bold {
-  font-weight: 700;
+  font-family: "Inter Tight", "InterDisplay", sans-serif;
+  font-weight: 900;
+  color: var(--color-red-700);
+  letter-spacing: -0.04em;
 }

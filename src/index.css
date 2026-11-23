@@ -69,10 +69,10 @@ body {
    Ukuran sel 20px di layar besar, mengecil otomatis di layar kecil
    agar tetap proporsional (responsive). */
 .bg-grid {
-  --grid-size: 14px;
+  --grid-size: 12px;
   background-image:
-    linear-gradient(to right, var(--color-gray-100) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--color-gray-100) 1px, transparent 1px);
+    linear-gradient(to right, var(--color-gray-200) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-gray-200) 1px, transparent 1px);
   background-size: var(--grid-size) var(--grid-size);
 }
 
