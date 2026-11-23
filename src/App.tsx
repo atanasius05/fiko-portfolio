@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import CustomCursor from "./components/CustomCursor";
 import Navbar from "./components/Navbar";
 import Ruler from "./components/Ruler";
+import ShapeGrid from "./components/ShapeGrid";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Home from "./pages/Home";
@@ -13,10 +14,30 @@ import Work from "./pages/Work";
 /**
  * Kerangka aplikasi: Navbar + ruler atas menempel di atas layar, ruler bawah
  * menempel di bawah layar, sedangkan isi halaman ditentukan oleh router.
+ * Background grid interaktif (ShapeGrid) menempel di viewport sebagai layer
+ * paling bawah, menggantikan background `.bg-grid` sebelumnya.
  */
 function App() {
   return (
-    <div className="bg-grid flex min-h-svh flex-col bg-white">
+    <div className="relative flex min-h-svh flex-col bg-white">
+      {/* Background grid: menyala di dekat kursor dan ikut melayang.
+          pointer-events-none supaya tidak menghalangi interaksi konten. */}
+      <div className="pointer-events-none fixed inset-0 z-0">
+        <ShapeGrid
+          shape="square"
+          direction="diagonal"
+          lineColor="#e5e7eb"
+          hoverColor="#bf1e1e"
+          hoverFillColor="#ff6767"
+          fillOpacity={0.15}
+          cellSize={40}
+          speed={0.5}
+          tiltX={0}
+          tiltY={0}
+          rainbow={false}
+        />
+      </div>
+
       <CustomCursor />
 
       {/* Navbar dan ruler atas ikut sticky bersama */}
@@ -25,7 +46,7 @@ function App() {
         <Ruler position="top" />
       </div>
 
-      <main className="flex-1">
+      <main className="relative z-10 flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />

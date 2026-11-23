@@ -1,13 +1,13 @@
 import type { CSSProperties, ReactNode } from "react";
 
-import ScrollReveal from "./ScrollReveal";
+import ScrambledText from "./ScrambledText";
 
 // import heroImg from "../assets/hero.png";
 import faceImg from "../assets/right.jpg";
 import faceImg2 from "../assets/left.jpg";
 
 /**
- * Font Inter Display untuk seluruh section ini, termasuk teks ScrollReveal
+ * Font Inter Display untuk seluruh section ini, termasuk teks ScrambledText
  * (diwarisi lewat `style` pada <section>).
  * Nama keluarga "InterDisplay" sesuai definisi font-face di
  * inter-display-latin.css yang dimuat dari index.html. Terakhir sans-serif bawaan.
@@ -184,26 +184,28 @@ export default function AboutIntro() {
         </div>
        
 
-        {/* Teks pengantar — terungkap kata demi kata mengikuti scroll (ScrollReveal).
-            Kata di dalam <strong> tetap tebal. Hapus `highlightColor` jika tidak
-            ingin kata berpendar merah saat muncul. */}
-        <ScrollReveal
-          containerClassName="max-w-[786px] text-center text-2xl font-medium leading-[1.35] tracking-tight text-black sm:text-4xl sm:leading-[1.15] md:text-5xl"
-          highlightColor="#e03131"
-          mode="scrub"
-          splitBy="lines"
-          effect="rise"
-          stagger={0.1}
-          baseOpacity={0.1}
-          baseRotation={7}
-          enableBlur
-          blurStrength={4}
+        {/* Teks pengantar — animasi scramble (ScrambledText): huruf acak ter-decode
+            saat masuk viewport dan bereaksi terhadap kursor. Format tipografi tetap:
+            InterDisplay untuk teks biasa, Inter Tight merah untuk <strong>
+            (lihat ScrambledText.css). Komponen ScrollReveal (animasi ikut scroll)
+            tidak dihapus, masih ada di src/components/ScrollReveal.tsx. */}
+        <ScrambledText
+          className="max-w-[786px] text-center text-2xl font-medium leading-[1.35] tracking-tight text-black sm:text-4xl sm:leading-[1.15] md:text-5xl"
+          effect="magnify"
+          radius={80}
+          strength={0.5}
+          trail={1}
+          duration={0.8}
+          speed={0.6}
+          scrambleChars="<>/*$#"
+          clickBurst
+          intro
         >
           {"I'm Fiko, a "}
           <strong>Fullstack Developer & UI/UX Designer</strong>
           {" who gets excited about making complicated things "}
           <strong>simple.</strong>
-        </ScrollReveal>
+        </ScrambledText>
 
         {/* Polaroid kanan — disembunyikan sementara */}
         <div className="hidden w-[140px] shrink-0 rotate-6 bg-white p-2 shadow-lg sm:block sm:w-[170px]">

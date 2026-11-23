@@ -1,0 +1,31 @@
+/*
+ * Gaya dasar ScrambledText.
+ * Font, ukuran, margin, dan lebar SENGAJA tidak diatur di sini supaya tipografi
+ * dari elemen induk tetap dipakai (mis. InterDisplay di section AboutIntro).
+ * Atur tampilan lewat prop `className`.
+ */
+.scrambled-text {
+  display: block;
+}
+
+/* Salinan teks untuk screen reader (teks yang tampil dipecah jadi huruf). */
+.scrambled-text-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Bagian tebal (<strong>) tetap memakai Inter Tight merah, sama seperti
+   sebelumnya pada ScrollReveal, supaya format tipografinya tidak berubah. */
+.scrambled-text strong {
+  font-family: "Inter Tight", "InterDisplay", sans-serif;
+  font-weight: 900;
+  color: var(--color-red-700);
+  letter-spacing: -0.04em;
+}

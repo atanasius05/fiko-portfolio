@@ -65,9 +65,9 @@ body {
   margin: 0;
 }
 
-/* Background grid: garis abu-abu (gray-200) membentuk kotak-kotak.
-   Ukuran sel 20px di layar besar, mengecil otomatis di layar kecil
-   agar tetap proporsional (responsive). */
+/* Background grid statis (garis gray-200) sudah DIGANTIKAN oleh komponen
+   interaktif `ShapeGrid` yang dipasang di App.tsx. Kode lama disimpan sebagai
+   komentar kalau sewaktu-waktu ingin dipakai lagi.
 .bg-grid {
   --grid-size: 12px;
   background-image:
@@ -81,6 +81,7 @@ body {
     --grid-size: 160px;
   }
 }
+*/
 
 /* Sembunyikan kursor asli karena pakai kursor kustom (CustomCursor).
    Kembalikan cursor pointer pada elemen interaktif agar user tetap
