@@ -12,8 +12,8 @@ import Projects from "./pages/Projects";
 import Work from "./pages/Work";
 
 /**
- * Kerangka aplikasi: Navbar + ruler atas menempel di atas layar, ruler bawah
- * menempel di bawah layar, sedangkan isi halaman ditentukan oleh router.
+ * Kerangka aplikasi: Navbar tetap sticky, ruler atas berada di awal dokumen,
+ * dan ruler bawah hanya terlihat saat mencapai akhir halaman.
  * Background grid interaktif (ShapeGrid) menempel di viewport sebagai layer
  * paling bawah, menggantikan background `.bg-grid` sebelumnya.
  */
@@ -40,11 +40,11 @@ function App() {
 
       <CustomCursor />
 
-      {/* Navbar dan ruler atas ikut sticky bersama */}
+      {/* Navbar tetap menempel di atas; ruler hanya berada di awal halaman */}
       <div className="sticky top-0 z-40">
         <Navbar />
-        <Ruler position="top" />
       </div>
+      <Ruler position="top" />
 
       <main className="relative z-10 flex-1">
         <Routes>
@@ -59,7 +59,7 @@ function App() {
         </Routes>
       </main>
 
-      <Ruler position="bottom" className="sticky bottom-0 z-40" />
+      <Ruler position="bottom" className="z-40 transition-opacity duration-150" />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type RulerProps = {
   /** "top": ticks hang from the top edge (put it under the navbar).
@@ -37,6 +37,8 @@ for (let v = MIN; v <= MAX; v += STEP) ticks.push(v);
  */
 export default function Ruler({ position = "top", className = "" }: RulerProps) {
   const stripRef = useRef<HTMLDivElement | null>(null);
+  const isTop = position === "top";
+  const [isAtPageBottom, setIsAtPageBottom] = useState(false);
 
   useEffect(() => {
     const strip = stripRef.current;
@@ -92,14 +94,36 @@ export default function Ruler({ position = "top", className = "" }: RulerProps) 
     };
   }, []);
 
-  const isTop = position === "top";
+  useEffect(() => {
+    if (isTop) return undefined;
+
+    const updateBottomVisibility = () => {
+      const documentHeight = document.documentElement.scrollHeight;
+      const viewportBottom = window.scrollY + window.innerHeight;
+      setIsAtPageBottom(viewportBottom >= documentHeight - 2);
+    };
+
+    const observer = new ResizeObserver(updateBottomVisibility);
+    observer.observe(document.documentElement);
+    window.addEventListener("scroll", updateBottomVisibility, { passive: true });
+    window.addEventListener("resize", updateBottomVisibility);
+    updateBottomVisibility();
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", updateBottomVisibility);
+      window.removeEventListener("resize", updateBottomVisibility);
+    };
+  }, [isTop]);
 
   return (
     <div
       aria-hidden="true"
       className={`pointer-events-none relative h-10 w-full select-none overflow-hidden bg-white font-mono text-[10px] text-neutral-400 ${
         isTop ? "border-b" : "border-t"
-      } border-neutral-300 ${className}`}
+      } border-neutral-300 ${
+        !isTop && !isAtPageBottom ? "invisible opacity-0" : "visible opacity-100"
+      } ${className}`}
     >
       <div
         ref={stripRef}
